@@ -5,11 +5,3 @@ body{
 ul{
 	list-style: none;
 }
-
-#setting{
-	position: relative;
-}
-.mask{
-	z-index: -100;
-	opacity: .5;
-}
