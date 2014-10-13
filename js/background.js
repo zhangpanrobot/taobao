@@ -61,11 +61,11 @@ function shopInfoBundle(data) {
 	//后加载数据链接
 	var lateDataMatch = new RegExp(/id="monthuserid"\svalue="(.*)(?=")/);//请求参数
 	var lateDataSource = 'http://rate.taobao.com/ShopService4C.htm?userNumId=' + lateDataMatch.exec(data)[1].trim() + '&shopID=' + g_config.shopId + '&isB2C=false';
-	sendRequest(lateDataSource, function(data) {
-		shopDataDetail = data;
-		data.complaints.indVal//纠纷
-		data.punish.indVal//处罚
-		data.ratRefund.indVal//退款
+	sendRequest(lateDataSource, function(badData) {
+		//shopDataDetail = data;
+		shopDataDetail.complaintsLocalVal = badData.complaints.localVal//纠纷(行业均值 为'indVal')
+		shopDataDetail.punishLocalVal = badData.punish.localVal//处罚
+		shopDataDetail.ratRefundLocalVal = badData.ratRefund.localVal//退款
 	});
 }
 
