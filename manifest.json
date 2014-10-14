@@ -5,7 +5,7 @@
     "description": "淘宝购物指南!",
     "version": "1.0.0",
     "content_scripts": [{
-        "matches": ["http://www.taobao.com/*"],
+        "matches": ["http://item.taobao.com/item.htm*"],
         "css": ["css/main.css"],
         "js": ["js/main.js"],
         "run_at": "document_end",
