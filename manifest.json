@@ -1,19 +1,20 @@
 {
     "manifest_version": 2,
-    "id": "com.sogou.shoppingGuide",
+    //"id": "com.sogou.shoppingGuide",
     "name": "淘宝购物指南",
     "description": "淘宝购物指南!",
     "version": "1.0.0",
     "content_scripts": [{
-        "matches": ["http://item.taobao.com/item.htm*"],
+        "matches": ["http://item.taobao.com/item.htm*", "http://rate.taobao.com/*", "http://orate.taobao.com/*", "http://detailskip.taobao.com/*"],
         "css": ["css/main.css"],
         "js": ["js/main.js"],
         "run_at": "document_end",
         "all_frames": true
     }],
     "background": {
-        "scripts": ["js/background.js"],
-        "page":"background.html"
+        "scripts": ["js/background.js"]
+        //"page":"background.html"
     },
-    "permissions": ["storage"]
+    "permissions": ["storage"],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

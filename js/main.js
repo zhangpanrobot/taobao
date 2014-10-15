@@ -1,85 +1,77 @@
 function $(selector) {
     return document.getElementById(selector);
 }
+var tbLocation;//发货地址
+document.onreadystatechange = function(){
+    if(document.readyState == 'complete'){
+        tbLocation = document.getElementsByClassName('tb-location')[0].innerText;//预用地址
+    }
+}
 
-var g_config = (new Function('return ' + document.getElementsByTagName('title')[0].nextElementSibling.textContent.replace(/\g_config.dynamicScript.*/g, '')))(); //大部分参数
-//店铺信息url
-var shopInfoSource = $('J_ShopInfo') && $('J_ShopInfo').getAttribute('data-rateUrl'); //获取店铺信息链接
-var microscopeData = document.getElementsByName('microscope-data')[0] && document.getElementsByName('microscope-data')[0].getAttribute('content').split(';').slice(0, -1); //必要参数
-var objBase = {};
-var buyerList = $('J_showListIndicator').getAttribute('data-api') + '&callback=Hub.data.records_reload';//详细成交记录url, 
+var g_con;
+var dataApi = $('J_listBuyerOnView').getAttribute('data-api'); //获取交易详情 &callback=__jsonp_records_reload, bid_page页面数
+var dataRateUrl = $('J_ShopInfo').getAttribute('data-rateUrl'); //获取店铺信息链接
+var reviews = $('reviews');
+var dataCommonApi = reviews.getAttribute('data-commonApi'); //获取各种评价数量 json.data.count.bad/normal/good
+var dataListApi = reviews.getAttribute('data-listApi'); //获取评价详情  尾部加两个参数  &callback=jsonp_reviews_list&currentPageNum=1(rataType=-1(差评)或0(中评))
+var apiItemInfo; //各种交易数据, 及其比率, json.quantity.confirmGoodsItems(交易成功数), json.quantity.paySuccess(交易中笔数), json.quantity.refundCount(纠纷退款数)
+//取apiItemInfo
+
+var scripts = document.querySelectorAll('script:not([src])');
+
 (function() {
-    var sub;
-    for (var i = 0; i < microscopeData.length; i++) {
-        sub = item.split('=');
-        objBase[sub[0]] = sub[1];
+    for (var i = 0; i < scripts.length; i++) {
+        var curContent = scripts[i].innerText;
+        if (~curContent.indexOf('Hub.config =') || (~curContent.indexOf('Hub.config='))) {
+            var referIndex = curContent.indexOf('"apiItemInfo"');
+            var startIndex = curContent.indexOf('"', referIndex + 13); //13为 "apiItemInfo" 的长度
+            var endIndex = curContent.indexOf('"', startIndex + 1);
+            apiItemInfo = curContent.slice(startIndex + 1, endIndex);
+        }
+        if(~curContent.indexOf('g_config =') || (~curContent.indexOf('g_config='))) {
+            g_con = (new Function('return ' + curContent.replace(/\g_config.dynamicScript.*/g, '')))();
+        }
     }
 })();
 
-//评价参数
-var commonOptions = {
-    callback: 'jsonp_reviews_list',
-    userNumId: g_config&&g_config.sellerId,
-    auctionNumId: g_config&&(g_config.pageId || g_config.itemId),
-    siteID: objBase.siteId,
-    currentPageNum: 1,
-    rateType: -1,
-    orderType: 'sort_weight',
-    showContent: 1,
-    attribute: ''
-};
-
-//评价页码
-function commonPageNum(num) {
-    commonOptions.currentPageNum = num;
-}
-//店铺信息
-function getShopInfo() {
-    sendRequest(shopInfoSource, shopInfoBundle);
-}
-
-var shopDataDetail = {};
-
-
-
-//评价url拼接
-function rateUrl() {
-    return http: //rate.taobao.com/feedRateList.htm?callback=jsonp_reviews_list&userNumId=shopInfoSource.
-}
-
-var commonInfoSource = document.getElementById('reviews').getAttribute('data-commonApi');
-var badCommonInfoSource = 'http://rate.taobao.com/feedRateList.htm?callback=jsonp_reviews_list&userNumId=' + commonOptions.userNumId + '&auctionNumId=' + commonOptions.auctionNumId + '&siteId=' + commonOptions.siteId + '&currentPageNum=' + commonOptions.currentPageNum + '&rateType=-1&orderType=sort_weight&showContent=1&attibute=';
-
-//评价
-function sellRecord() {
-    //评价数量
-    sendRequest(commonInfoSource, ); //处理评价比率
-    //差评汇总
-    sendRequest(badCommonInfoSource, function() {
-
-    });
-}
-
 var options = {
-    cmd:'get-basicInfo',
-    g_config: g_config,
-    shopInfoSource: shopInfoSource,//店铺信息
-    commonInfoSource: commonInfoSource, //各种评价
+    cmd: 'get-basicInfo',
+    g_con: g_con,//全局参数
+    dataRateUrl: dataRateUrl, //店铺信息
+    dataCommonApi: dataCommonApi, //各种评价数量
+    dataListApi: dataListApi, //评价详情
+    apiItemInfo: apiItemInfo, //交易数据
+    dataApi: dataApi //交易详情
 };
 
 //一次发所有消息
 chrome.extension.sendRequest(options);
+// chrome.extension.onRequest.addListener(function(msg) {
+//     switch (msg.cmd) {
+//         case 'basicInfo': //基本信息
 
-chrome.extension.onRequest.addListener(function(msg) {
-    switch (msg.cmd) {
-        case 'basicInfo': //基本信息
+//     }
+// });
 
-    }
-});
 
 //创建Node
-var taobaoAssistant;
+// var taobaoAssistant;
+var fragMent = document.createDocumentFragment();
+var ul = document.createElement('ul');
+for(var i =0;i<7;i++) {
+    var li = document.createElement('li');
+    li.appendChild(document.createTextNode(''));//遍历数据数组
+    ul.appendChild(li);
+}
+//差评浮层
+var floatMent = document.createDocumentFragment();
+var floatUl = document.createElement('ul');
+for(var i =0;i<7;i++) {//遍历差评条数
+    var li = document.createElement('li');
+    li.appendChild(document.createTextNode(''));//遍历数据数组
+    ul.appendChild(li);
+}
 
-//插入页面
-var referenceElement = document.getElementsByClassName('tb-skin')[0];
-referenceElement.parentNode.insertBefore(taobaoAssistant, referenceElement);
+// //插入页面
+// var referenceElement = document.getElementsByClassName('tb-skin')[0];
+// referenceElement.parentNode.insertBefore(taobaoAssistant, referenceElement);

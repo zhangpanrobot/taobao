@@ -1,60 +1,106 @@
-chrome.extention.onRequest.addListener(function(msg){
-	switch(msg.cmd) 
-	{
+var apiGroup = {};
+var infoGroup = {};
+var h = 0;
+chrome.extension.onRequest.addListener(function(msg) {
+	switch (msg.cmd) {
 		case 'get-basicInfo':
-			getBaiscInfo(msg.shopInfoSource);
-			chrome.extention.sendRequest();
+			h = 0; //页面变动, 状态清零
+			apiGroup = msg;
+			infoGroup.commentList = []; //评价
+			infoGroup.badCommentList = []; //差评
+			infoGroup.normalCommentList = []; //中评
+			infoGroup.tradeDetailList = []; //交易详情
+			infoGroup.successRate = ''; //交易成功率
+			(function() {
+				for (var i = 1; i < 6; i++) {
+					sendRequest(apiGroup.dataListApi + '&callback=jsonp_reviews_list&currentPageNum=' + i, function(data) {
+						dataCollection(data, infoGroup.commentList);
+					}); //评价
+					sendRequest(apiGroup.dataApi.replace(/&bid_page=[0-9]*/, '') + '&callback=__jsonp_records_reload&bid_page=' + i, function(data) {
+						dataCollection(data, infoGroup.tradeDetailList);
+					}); //交易详情
+				}
+			})();
+			//中评
+			sendRequest(apiGroup.dataListApi + '&callback=jsonp_reviews_list&currentPageNum=1&rateType=0', function(data) {
+				dataCollection(data, infoGroup.normalCommentList);
+			});
+			//差评
+			sendRequest(apiGroup.dataListApi + '&callback=jsonp_reviews_list&currentPageNum=1&rateType=-1', function(data) {
+				dataCollection(data, infoGroup.badCommentList);
+			});
+			//交易成功
+			sendRequest(apiGroup.apiItemInfo, function(data) {
+				dataCollection(data, infoGroup.successRate);
+			});
+			sendRequest(apiGroup.dataRateUrl, shopInfoBundle);
+			break;
 	}
 });
 
 function sendRequest(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            callback(xhr.responseText);
-        }
-    }
-    xhr.open('GET', url, true);
-    xhr.send();
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			callback(xhr.responseText);
+		}
+	}
+	xhr.open('GET', url, true);
+	xhr.send();
 }
-//取5次评论, 算匿名率
 
-//取5次成交记录, 算匿名率
+function dataCollection(data, dataList) {
+	data = (new Function('function $callback(obj){return obj};function jsonp_reviews_list(obj){return obj;}function __jsonp_records_reload(obj){return obj;};return ' + data.trim()))();
+	if (typeof dataList === "string") {
+		infoGroup.successRate = (data.quantity.paySuccessItems / (data.quantity.paySuccessItems + data.quantity.confirmGoodsItems) * 100).toFixed(2);
+	} else {
+		dataList.push(data);
+	}
+	h++;
+	if (h == 13) { //数据全部获得
+		var commentsLength = 0,
+			anonyCommentsLength = 0,
+			anonyCommentsRate = 0;
+		var tradeLength = 0,
+			anonyTradeLength = 0,
+			anonyTradeRate = 0;
+		//处理数据
+		console.log(infoGroup);
+		for (var i = 0; i < 5; i++) {
+			var curCommentsList = infoGroup.commentList[i].comments;
+			var curCommentsLength = curCommentsList && curCommentsList.length; //排除curCommentsList为null情况
+			commentsLength += curCommentsLength || 0;
+			for (var j = 0; j < curCommentsLength; j++) {
+				if (JSON.parse(curCommentsList[j].user.anony)) {
+					anonyCommentsLength++;
+				}
+			}
+			var curTradeDetailList = infoGroup.tradeDetailList[i].html;
+			var buyer = new RegExp(/tb-buyer/g);
+			if (~curTradeDetailList.indexOf('tb-buyer')) {
+				tradeLength += curTradeDetailList.match(buyer).length;
+				anonyTradeLength += curTradeDetailList.match(new RegExp(/匿名/g)).length;
+			}
+		}
+		anonyCommentsRate = ((anonyCommentsLength / commentsLength) * 100).toFixed(2); //评价匿名率
+		anonyTradeRate = ((anonyTradeLength / tradeLength) * 100).toFixed(2); //成交量匿名率
+	}
+}
 
 var shopDataDetail = {};
+
 function shopInfoBundle(data) {
-    //正则取出所有数据
-    var shopLocation = data.slice(data.indexOf("class=\"text\"", data.indexOf("<dt>所在地区：")) + 13, data.indexOf("</span", data.indexOf("<dt>所在地区："))); //所在地
-    var foundDate = data.slice(data.indexOf("class=\"text\"", data.indexOf("<dt>创建时间")) + 13, data.indexOf("</span", data.indexOf("<dt>创建时间"))); //成立日期
-    //后加载数据链接
-    var lateDataMatch = new RegExp(/id="monthuserid"\svalue="(.*)(?=")/); //请求参数
-    var lateDataSource = 'http://rate.taobao.com/ShopService4C.htm?userNumId=' + lateDataMatch.exec(data)[1].trim() + '&shopID=' + g_config.shopId + '&isB2C=false';
-    sendRequest(lateDataSource, function(badData) {
-        //shopDataDetail = data;
-        shopDataDetail.complaintsLocalVal = badData.complaints.localVal //纠纷(行业均值 为'indVal')
-        shopDataDetail.punishLocalVal = badData.punish.localVal //处罚
-        shopDataDetail.ratRefundLocalVal = badData.ratRefund.localVal //退款
-    });
-}
-
-function getBaiscInfo(url) {
-	sendRequest(url, function(data) {
-		shopInfoBundle(data);
+	var dateIndex = data.indexOf('id="J_showShopStartDate"');
+	var foundDate = data.slice(dateIndex, data.indexOf('/>', dateIndex));
+	infoGroup.shopStartDate = foundDate.match(new RegExp(/[0-9\-]{4,}/g));
+	//后加载数据链接
+	var lateDataMatch = new RegExp(/id="monthuserid"\svalue="(.*)(?=")/); //请求参数
+	var lateDataSource = 'http://rate.taobao.com/ShopService4C.htm?userNumId=' + lateDataMatch.exec(data)[1].trim() + '&shopID=' + apiGroup.g_con.shopId + '&isB2C=false';
+	sendRequest(lateDataSource, function(badData) {
+		var formatBadData = JSON.parse(badData);//所有不好的数据
+		shopDataDetail.complaintsLocalVal = formatBadData.complaints.localVal //纠纷(行业均值 为'indVal')
+		shopDataDetail.punishLocalVal = formatBadData.punish.localVal //处罚
+		shopDataDetail.ratRefundLocalVal = formatBadData.ratRefund.localVal //退款
+		console.log(shopDataDetail); //店铺详情里纠纷率
 	});
-}
-
-function parseQueryString(url)
-{
-   var obj={};
-   var keyvalue=[];
-   var key="",value="";       
-   var paraString=url.substring(url.indexOf("?")+1,url.length).split("&");
-   for(var i in paraString)
-   {
-      keyvalue=paraString[i].split("=");
-      key=keyvalue[0];
-      value=keyvalue[1];
-      obj[key]=value;            
-   }        
-   return obj;
 }
