@@ -72,6 +72,22 @@ for(var i =0;i<7;i++) {//遍历差评条数
     ul.appendChild(li);
 }
 
+function CreateFragments(){
+
+    var fragment = document.createDocumentFragment();
+
+    for(var i = 0;i < 10000;i++){
+
+        var tmpNode = document.createElement("div");
+        tmpNode.innerHTML = "test" + i + "<br />";
+        fragment.appendChild(tmpNode);
+    }
+
+    document.body.appendChild(fragment);
+}
+
+
+
 // //插入页面
 // var referenceElement = document.getElementsByClassName('tb-skin')[0];
 // referenceElement.parentNode.insertBefore(taobaoAssistant, referenceElement);
