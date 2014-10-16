@@ -1,11 +1,14 @@
 function $(selector) {
     return document.getElementById(selector);
 }
-var tbLocation;//发货地址
-document.onreadystatechange = function(){
-    if(document.readyState == 'complete'){
-        tbLocation = document.getElementsByClassName('tb-location')[0].innerText;//预用地址
+var tbLocation; //发货地址
+document.onreadystatechange = function() {
+    if (document.readyState == 'complete') {
+        tbLocation = document.getElementsByClassName('tb-location')[0].innerText; //预用地址
     }
+    document.querySelector('[data-property="尺码"]').children.length > 8; //鞋码判断
+    var bodyText = document.body.innerText;
+    //bodyText.search( //);
 }
 
 var g_con;
@@ -28,7 +31,7 @@ var scripts = document.querySelectorAll('script:not([src])');
             var endIndex = curContent.indexOf('"', startIndex + 1);
             apiItemInfo = curContent.slice(startIndex + 1, endIndex);
         }
-        if(~curContent.indexOf('g_config =') || (~curContent.indexOf('g_config='))) {
+        if (~curContent.indexOf('g_config =') || (~curContent.indexOf('g_config='))) {
             g_con = (new Function('return ' + curContent.replace(/\g_config.dynamicScript.*/g, '')))();
         }
     }
@@ -36,7 +39,7 @@ var scripts = document.querySelectorAll('script:not([src])');
 
 var options = {
     cmd: 'get-basicInfo',
-    g_con: g_con,//全局参数
+    g_con: g_con, //全局参数
     dataRateUrl: dataRateUrl, //店铺信息
     dataCommonApi: dataCommonApi, //各种评价数量
     dataListApi: dataListApi, //评价详情
@@ -56,35 +59,35 @@ chrome.extension.sendRequest(options);
 
 //创建Node
 // var taobaoAssistant;
-var fragMent = document.createDocumentFragment();
-var ul = document.createElement('ul');
-for(var i =0;i<7;i++) {
-    var li = document.createElement('li');
-    li.appendChild(document.createTextNode(''));//遍历数据数组
-    ul.appendChild(li);
-}
-//差评浮层
-var floatMent = document.createDocumentFragment();
-var floatUl = document.createElement('ul');
-for(var i =0;i<7;i++) {//遍历差评条数
-    var li = document.createElement('li');
-    li.appendChild(document.createTextNode(''));//遍历数据数组
-    ul.appendChild(li);
-}
+// var fragMent = document.createDocumentFragment();
+// var ul = document.createElement('ul');
+// for(var i =0;i<7;i++) {
+//     var li = document.createElement('li');
+//     li.appendChild(document.createTextNode(''));//遍历数据数组
+//     ul.appendChild(li);
+// }
+// //差评浮层T
+// var floatMent = document.createDocumentFragment();
+// var floatUl = document.createElement('ul');
+// for(var i =0;i<7;i++) {//遍历差评条数
+//     var li = document.createElement('li');
+//     li.appendChild(document.createTextNode(''));//遍历数据数组
+//     ul.appendChild(li);
+// }
 
-function CreateFragments(){
+// function CreateFragments(){
 
-    var fragment = document.createDocumentFragment();
+//     var fragment = document.createDocumentFragment();
 
-    for(var i = 0;i < 10000;i++){
+//     for(var i = 0;i < 10000;i++){
 
-        var tmpNode = document.createElement("div");
-        tmpNode.innerHTML = "test" + i + "<br />";
-        fragment.appendChild(tmpNode);
-    }
+//         var tmpNode = document.createElement("div");
+//         tmpNode.innerHTML = "test" + i + "<br />";
+//         fragment.appendChild(tmpNode);
+//     }
 
-    document.body.appendChild(fragment);
-}
+//     document.body.appendChild(fragment);
+// }
 
 
 

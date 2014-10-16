@@ -61,10 +61,10 @@ function dataCollection(data, dataList) {
 	if (h == 13) { //数据全部获得
 		var commentsLength = 0,
 			anonyCommentsLength = 0;
-			displayInfo.anonyCommentsRate = 0;
+		displayInfo.anonyCommentsRate = 0;
 		var tradeLength = 0,
 			anonyTradeLength = 0;
-			displayInfo.anonyTradeRate = 0;
+		displayInfo.anonyTradeRate = 0;
 		//处理数据
 		console.log(infoGroup);
 		for (var i = 0; i < 5; i++) {
@@ -79,8 +79,8 @@ function dataCollection(data, dataList) {
 			var curTradeDetailList = infoGroup.tradeDetailList[i].html;
 			var buyer = new RegExp(/tb-buyer/g);
 			if (~curTradeDetailList.indexOf('tb-buyer')) {
-				tradeLength += curTradeDetailList.match(buyer).length;
-				anonyTradeLength += curTradeDetailList.match(new RegExp(/匿名/g)).length;
+				tradeLength += curTradeDetailList.match(buyer) ? curTradeDetailList.match(buyer).length : 0;
+				anonyTradeLength += curTradeDetailList.match(new RegExp(/匿名/g)) ? curTradeDetailList.match(new RegExp(/匿名/g)).length : 0;
 			}
 		}
 		displayInfo.anonyCommentsRate = ((anonyCommentsLength / commentsLength) * 100).toFixed(2); //评价匿名率
@@ -98,10 +98,25 @@ function shopInfoBundle(data) {
 	var lateDataMatch = new RegExp(/id="monthuserid"\svalue="(.*)(?=")/); //请求参数
 	var lateDataSource = 'http://rate.taobao.com/ShopService4C.htm?userNumId=' + lateDataMatch.exec(data)[1].trim() + '&shopID=' + apiGroup.g_con.shopId + '&isB2C=false';
 	sendRequest(lateDataSource, function(badData) {
-		var formatBadData = JSON.parse(badData);//所有不好的数据
-		shopDataDetail.complaintsLocalVal = formatBadData.complaints.localVal //纠纷(行业均值 为'indVal')
-		shopDataDetail.punishLocalVal = formatBadData.punish.localVal //处罚
-		shopDataDetail.ratRefundLocalVal = formatBadData.ratRefund.localVal //退款
-		console.log(shopDataDetail); //店铺详情里纠纷率
+		var formatBadData = JSON.parse(badData); //所有不好的数据
+		//退款
+		displayInfo.ratRefund = {};
+		displayInfo.complaints = {};
+		displayInfo.punish = {};
+		var ratRefund = formatBadData.ratRefund;
+		var complaints = formatBadData.complaints;
+		var punish = formatBadData.punish;
+		displayInfo.ratRefund.refundCount = ratRefund.refundCount; //退款总笔数
+		displayInfo.ratRefund.danger = +ratRefund.indVal - (+ratRefund.localVal) <= 0 ? true : false;
+		displayInfo.ratRefund.localVal = ratRefund.localVal;
+		//纠纷
+		displayInfo.complaints.disputRefundNum = complaints.disputRefundNum; //纠纷退款
+		displayInfo.complaints.danger = +complaints.indVal - (+complaints.localVal) <= 0 ? true : false;
+		displayInfo.complaints.localVal = complaints.localVal;
+		//处罚
+		displayInfo.punish.punishCount = punish.punishCount; //处罚数
+		displayInfo.punish.cPunishTimes = punish.cPunishTimes; //售假数, 不为零时显示"售假"
+		displayInfo.punish.danger = +punish.indVal - (+punish.localVal) < 0 ? true : false;
+		displayInfo.punish.localVal = punish.localVal;
 	});
 }
