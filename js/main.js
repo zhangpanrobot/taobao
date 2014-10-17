@@ -4,9 +4,9 @@ function $(selector) {
 var tbLocation; //发货地址
 document.onreadystatechange = function() {
     if (document.readyState == 'complete') {
-        tbLocation = document.getElementsByClassName('tb-location')[0].innerText; //预用地址
+        tbLocation = document.getElementsByClassName('tb-location')[0] && document.getElementsByClassName('tb-location')[0].innerText; //预用地址
     }
-    document.querySelector('[data-property="尺码"]').children.length > 8; //鞋码判断
+    //document.querySelector('[data-property="尺码"]').children.length > 8; //鞋码判断
     var bodyText = document.body.innerText;
     //bodyText.search( //);
 }
@@ -46,15 +46,20 @@ var options = {
     apiItemInfo: apiItemInfo, //交易数据
     dataApi: dataApi //交易详情
 };
-
+var displayInfo = {};
+chrome.extension.onRequest.addListener(function(msg) {
+    switch (msg.cmd) {
+        case 'basicInfo': //基本信息
+            displayInfo = msg.data;
+            console.log(displayInfo);
+            //开始渲染
+            break;
+        default:
+            return;
+    }
+});
 //一次发所有消息
 chrome.extension.sendRequest(options);
-// chrome.extension.onRequest.addListener(function(msg) {
-//     switch (msg.cmd) {
-//         case 'basicInfo': //基本信息
-
-//     }
-// });
 
 
 //创建Node
@@ -92,5 +97,5 @@ chrome.extension.sendRequest(options);
 
 
 // //插入页面
-// var referenceElement = document.getElementsByClassName('tb-skin')[0];
+// var referenceElement = $('.sep-line');
 // referenceElement.parentNode.insertBefore(taobaoAssistant, referenceElement);
