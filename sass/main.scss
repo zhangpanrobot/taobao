@@ -1,8 +1,41 @@
 ul{
 	list-style: none;
-	li{
-		margin:0;
-		margin: 0;
-		padding: 1;
-	}
+}
+/*差评页*/
+.rate-item {
+	border-bottom: 1px solid #ddd;
+	padding: 20px 12px;
+}
+.rate-auction {
+	padding-top: 2px;
+	float: left;
+	width: 200px;
+	word-break: break-all;
+	white-space: normal;
+	margin-right: 45px;
+}
+.price em {
+	color: #f60;
+	maring: 0 2px;
+	font-family: Tahoma,Helvetica,Arial;
+}
+.rate-type {
+	float: left;
+	width: 50px;
+	min-height: 10px;
+	_height: 10px;
+	margin-right: 5px;
+	text-align: center;
+}
+.rate-bad {
+	vertical-align: middle;
+	display: inline-block;
+	width: 18px;
+	height: 17px;
+}
+.rate-bad {
+	background-position: -295px -105px;
+}
+.rate-icon {
+	background: url(http://img08.taobaocdn.com/tps/i8/T1ZQ0GXiJFXXXXXXXX-676-800.png) no-repeat scroll 1000px 1000px;
 }

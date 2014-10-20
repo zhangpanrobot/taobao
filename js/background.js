@@ -108,7 +108,7 @@ function dataCollection(data, dataList) {
 		}
 		displayInfo.anonyCommentsRate = ((anonyCommentsLength / commentsLength) * 100).toFixed(2); //评价匿名率
 		displayInfo.anonyTradeRate = ((anonyTradeLength / tradeLength) * 100).toFixed(2); //成交量匿名率
-		displayInfo.badCommentList = displayInfo.badCommentList[0].comments && badCommentRefine(displayInfo.badCommentList[0].comments);
+		displayInfo.badCommentList = displayInfo.badCommentList[0].comments// && badCommentRefine(displayInfo.badCommentList[0].comments);
 		sendToContent();
 	}
 }
@@ -116,7 +116,8 @@ function dataCollection(data, dataList) {
 function shopInfoBundle(data) {
 	var dateIndex = data.indexOf('id="J_showShopStartDate"');
 	var foundDate = data.slice(dateIndex, data.indexOf('/>', dateIndex));
-	displayInfo.shopStartDate = foundDate.match(new RegExp(/[0-9\-]{4,}/g))[0];
+	var shopStartDate = foundDate.match(new RegExp(/[0-9\-]{4,}/g))[0];
+	displayInfo.shopStartDate = ((new Date() - new Date(shopStartDate))/31104000000).toFixed(1).toString().split('.');
 	var locationMatch = data.match(/<li>所在地区/g);
 	var locationRefer = data.lastIndexOf('<li>所在地区') + 9;
 	if (locationMatch) {
@@ -155,27 +156,27 @@ function shopInfoBundle(data) {
 	sendRequest(rateApi, function(allBadData) {
 		displayInfo.allBadCommentList = [];
 		allBadData = (new Function('function shop_rate_list(obj){return obj};return ' + allBadData.trim()))();
-		displayInfo.allBadCommentList = allBadData.rateListDetail && badCommentRefine(allBadData.rateListDetail);
+		displayInfo.allBadCommentList = allBadData.rateListDetail;// && badCommentRefine(allBadData.rateListDetail);
 		sendToContent();
 	});
 }
 
-function badCommentRefine(list) { //差评信息筛选
-	var listLen = list.length;
-	var badCommentList = [];
-	for (var i = 0; i < listLen; i++) {
-		var badComment = {};
-		var curList = list[i];
-		badComment.auctionPrice = curList.auction.auctionPrice; //价格
-		badComment.title = curList.auction.title; //名称
-		badComment.sku = curList.auction.sku; //款式等信息
-		badComment.date = curList.date;
-		badComment.content = curList.content; //内容
-		badComment.name = curList.user.nick + (JSON.parse(curList.user.anony) ? '(匿名)' : '');
-		badComment.rank = curList.user.rank;
-		badComment.vipLevel = curList.user.vipLevel;
-		badComment.appendContent = curList.append && curList.append.content; //追回评论
-		badCommentList.push(badComment);
-	}
-	return badCommentList;
-}
+// function badCommentRefine(list) { //差评信息筛选
+// 	var listLen = list.length;
+// 	var badCommentList = [];
+// 	for (var i = 0; i < listLen; i++) {
+// 		var badComment = {};
+// 		var curList = list[i];
+// 		badComment.auctionPrice = curList.auction.auctionPrice; //价格
+// 		badComment.title = curList.auction.title; //名称
+// 		badComment.sku = curList.auction.sku; //款式等信息
+// 		badComment.date = curList.date;
+// 		badComment.content = curList.content; //内容
+// 		badComment.name = curList.user.nick + (JSON.parse(curList.user.anony) ? '(匿名)' : '');
+// 		badComment.rank = curList.user.rank;
+// 		badComment.vipLevel = curList.user.vipLevel;
+// 		badComment.appendContent = curList.append && curList.append.content; //追回评论
+// 		badCommentList.push(badComment);
+// 	}
+// 	return badCommentList;
+// }
