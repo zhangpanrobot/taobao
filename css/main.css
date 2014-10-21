@@ -39,9 +39,6 @@ ul{
 .rate-bad {
 	background-position: -295px -105px;
 }
-.tb-r-date, .tb-r-sku{
-	color: #aaa;
-}
 .rate-userinfo {
 	float: right;
 	width: 160px;
@@ -49,6 +46,7 @@ ul{
 }
 
 #sg-badComments, #sg-allBadComments {
+	display: none;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	position: fixed;
@@ -66,4 +64,83 @@ ul{
 
 .sg-comments-header.hide {
 	display: none;
+}
+.hide{
+	display: none;
+}
+
+.sg-nav-tabs>li{
+	line-height: 2em;
+	text-align: center;
+	background-color: #7aace7;
+	font-size: 1.5em;
+	color: #fff;
+	display: inline-block;
+	width: 50%;
+	position: relative;
+}
+.sg-active:before{
+    content:"";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent transparent #f5f8fc transparent;
+    border-width: .5em;
+    border-style: solid;
+    top:1em;
+    left:48%;
+    z-index: 100;
+}
+.sg-link{
+	color:#5e9ce9;
+}
+.sg-note .sg-rate{
+	color:#5e9ce9;
+}
+.sg-note .tb-r-sku{
+	display: none;
+}
+.sg-warn .sg-rate{
+	color:#f22003;
+}
+.sg-warn .tb-r-sku{
+	display: inline;
+}
+.sg-nav-content{
+	background-color: #f5f8fc;
+}
+.sg-nav-content p>span{
+
+}
+.tb-r-date, .tb-r-sku{
+	color: #aaa;
+}
+.sg-evaluate>span{
+	margin-right: 1.5em;
+}
+.sg-evaluate .sg-link{
+	cursor: pointer;
+}
+.sg-comments-hide{
+	float: right;
+	cursor: pointer;
+}
+.sg-serious-warn{
+	margin-left: .5em;
+	color: #fff;
+	background-color: #f24e32;
+	padding: .2em;
+	border-radius: .3em;
+	position: relative;
+}
+.sg-serious-warn:before{
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-color: transparent #f24e32 transparent transparent;
+	border-width: 0.4em;
+	border-style: solid;
+	top: .5em;
+	left: -.7em;
 }

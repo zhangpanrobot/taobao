@@ -13,8 +13,6 @@ function sendToContent() {
 			chrome.tabs.sendRequest(tabs[0].id, {
 				cmd: 'basicInfo',
 				data: displayInfo
-			}, function() {
-				console.log('sendMessage')
 			});
 		});
 		finalNum = 0;
@@ -139,16 +137,17 @@ function shopInfoBundle(data) {
 		var complaints = formatBadData.complaints;
 		var punish = formatBadData.punish;
 		displayInfo.ratRefund.refundCount = ratRefund.refundCount; //退款总笔数
-		displayInfo.ratRefund.danger = +ratRefund.indVal - (+ratRefund.localVal) <= 0 ? true : false;
+		displayInfo.ratRefund.danger = +ratRefund.indVal - (+ratRefund.localVal) < 0 ? true : false;
 		displayInfo.ratRefund.localVal = ratRefund.localVal;
 		//纠纷
 		displayInfo.complaints.disputRefundNum = complaints.disputRefundNum; //纠纷退款
-		displayInfo.complaints.danger = +complaints.indVal - (+complaints.localVal) <= 0 ? true : false;
+		displayInfo.complaints.danger = +complaints.indVal - (+complaints.localVal) < 0 ? true : false;
 		displayInfo.complaints.localVal = complaints.localVal;
 		//处罚
 		displayInfo.punish.punishCount = punish.punishCount; //处罚数
 		displayInfo.punish.cPunishTimes = punish.cPunishTimes; //售假数, 不为零时显示"售假"
 		displayInfo.punish.danger = +punish.indVal - (+punish.localVal) < 0 ? true : false;
+		displayInfo.punish.xujiaTimes = punish.xujiaTimes;//虚假交易
 		displayInfo.punish.localVal = punish.localVal;
 		sendToContent();
 	});
