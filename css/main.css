@@ -19,11 +19,18 @@ ul{
 	maring: 0 2px;
 	font-family: Tahoma,Helvetica,Arial;
 }
+.rate-item{
+	overflow: hidden;
+}
+.rate-content {
+	float: left;
+	width: 300px;
+	position: relative;
+}
 .rate-type {
 	float: left;
 	width: 50px;
 	min-height: 10px;
-	_height: 10px;
 	margin-right: 5px;
 	text-align: center;
 }
@@ -47,33 +54,71 @@ ul{
 
 #sg-badComments, #sg-allBadComments {
 	display: none;
-	overflow-y: scroll;
-	overflow-x: hidden;
 	position: fixed;
 	left:0;
 	right: 0;
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	width: 800px;
-	height: 800px;
-	border: 1px solid #eee;
+	width: 840px;
+	height: 500px;
+	border: 1px solid #ccc;
 	background-color: #fff;
+	box-shadow: 1px 2px 1px #eee; 
 	z-index: 100000000!important;
 }
-
-.sg-comments-header.hide {
+.sg-comments-header{
+	height: 30px;
+	line-height: 30px;
+}
+.sg-comments-hide{
+	float: right;
+	cursor: pointer;
+}
+.sg-comments-header.hide, .hide{
 	display: none;
 }
-.hide{
-	display: none;
+.sg-comments-content{
+	overflow-y: auto;
+	overflow-x: hidden;
+	border-bottom: 1px solid #ccc;
+	height: 427px;
+	width: 100%;
 }
-
+.sg-more{
+	height: 42px;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
+.sg-more>span{
+	border: 1px solid #b8b8b8;
+	position: absolute;
+	right: 12px;
+	top: 8px;
+	padding: 3px 12px;
+	cursor: pointer;
+}
+.sg-more>span:hover{
+	border-color: #858585;
+}
+.sg-more>span:active{
+	border-color: #b3b3b3;
+	background-color: #ebebeb;
+}
+.sg-disable {
+	border-color:#e0e0e0;
+	color:#aaa;
+}
+.sg-nav-tabs{
+	padding-left: 40px;
+	background: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_clock.png) no-repeat left top;
+	background-color: #79ade9;
+}
 .sg-nav-tabs>li{
 	height: 40px;
 	line-height: 40px;
 	text-align: center;
-	background-color: #79ade9;
 	font-size: 16px;
 	color: #e8f0fb;
 	display: inline-block;
@@ -131,7 +176,7 @@ ul{
 	background-color: #f5f8fc;
 	color: #333;
 	border: 1px solid #c4daf2;
-	height: 216px;
+	height: auto;
 }
 .sg-nav-content li{
 	background-repeat: no-repeat;
@@ -157,10 +202,6 @@ ul{
 .sg-evaluate .tb-r-sku{
 	cursor: default;
 }
-.sg-comments-hide{
-	float: right;
-	cursor: pointer;
-}
 .sg-serious-warn{
 	margin-left: 12px;
 	color: #fff;
@@ -169,6 +210,7 @@ ul{
 	border-radius: .3em;
 	position: relative;
 	border: 1px solid #df3917;
+	white-space: nowrap;
 }
 .sg-serious-warn:before{
 	content: "";
@@ -192,4 +234,27 @@ ul{
 }
 .sg-badComment{
 	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_comment.png);
+}
+
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color:#f0f0f0; 
+    -webkit-border-radius: 9px;
+    border-radius: 9px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 9px;
+    border-radius: 9px;
+    background-color: #d1d1d1;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4); 
 }
