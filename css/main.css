@@ -70,45 +70,78 @@ ul{
 }
 
 .sg-nav-tabs>li{
-	line-height: 2em;
+	height: 40px;
+	line-height: 40px;
 	text-align: center;
-	background-color: #7aace7;
-	font-size: 1.5em;
-	color: #fff;
+	background-color: #79ade9;
+	font-size: 16px;
+	color: #e8f0fb;
 	display: inline-block;
 	width: 50%;
 	position: relative;
 }
+.sg-nav-tabs>li:first-child:after{
+	content:"";
+    position: absolute;
+    width: 0;
+    height: 16px;
+    border-color: transparent;
+    border-left-color: #afcef2;
+    border-width: 1px;
+    border-style: solid;
+    top:12px;
+    right:0;
+}
+.sg-nav-tabs .sg-active{
+	color: #fff;
+}
 .sg-active:before{
     content:"";
     position: absolute;
+    z-index: 100;
     width: 0;
     height: 0;
     border-color: transparent transparent #f5f8fc transparent;
-    border-width: .5em;
+    border-width: 10px;
     border-style: solid;
-    top:1em;
+    top:22px;
     left:48%;
     z-index: 100;
 }
 .sg-link{
-	color:#5e9ce9;
+	color:#5798e2;
+}
+.sg-link:hover{
+	color: #70abf0;
 }
 .sg-note .sg-rate{
 	color:#5e9ce9;
 }
 .sg-note .tb-r-sku{
 	display: none;
+	padding-left: 10px;
 }
 .sg-warn .sg-rate{
-	color:#f22003;
+	color:#f22800;
 }
 .sg-warn .tb-r-sku{
 	display: inline;
 }
 .sg-nav-content{
 	background-color: #f5f8fc;
+	color: #333;
+	border: 1px solid #c4daf2;
+	height: 216px;
 }
+.sg-nav-content li{
+	background-repeat: no-repeat;
+	padding-left: 40px;
+	margin: 12px 0;
+}
+.sg-nav-content p{
+	margin: 2px 0;
+}
+
 .sg-nav-content p>span{
 
 }
@@ -121,17 +154,21 @@ ul{
 .sg-evaluate .sg-link{
 	cursor: pointer;
 }
+.sg-evaluate .tb-r-sku{
+	cursor: default;
+}
 .sg-comments-hide{
 	float: right;
 	cursor: pointer;
 }
 .sg-serious-warn{
-	margin-left: .5em;
+	margin-left: 12px;
 	color: #fff;
 	background-color: #f24e32;
-	padding: .2em;
+	padding: 1px 6px;
 	border-radius: .3em;
 	position: relative;
+	border: 1px solid #df3917;
 }
 .sg-serious-warn:before{
 	content: "";
@@ -139,8 +176,20 @@ ul{
 	width: 0;
 	height: 0;
 	border-color: transparent #f24e32 transparent transparent;
-	border-width: 0.4em;
+	border-width: 6px;
 	border-style: solid;
-	top: .5em;
-	left: -.7em;
+	top: 2px;
+	left: -11px;
+}
+.sg-shopStartDate{
+	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_clock.png);
+}
+.sg-quality{
+	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_date.png);
+}
+.sg-anonymity{
+	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_anonymity.png);
+}
+.sg-badComment{
+	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_comment.png);
 }
