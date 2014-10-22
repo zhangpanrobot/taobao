@@ -150,7 +150,7 @@ ul{
     border-width: 10px;
     border-style: solid;
     top:22px;
-    left:48%;
+    left:46%;
     z-index: 100;
 }
 .sg-link{
@@ -166,6 +166,9 @@ ul{
 	display: none;
 	padding-left: 10px;
 }
+#sg-taobaoAssistant .tb-r-sku{
+	color: #999;
+}
 .sg-warn .sg-rate{
 	color:#f22800;
 }
@@ -176,7 +179,9 @@ ul{
 	background-color: #f5f8fc;
 	color: #333;
 	border: 1px solid #c4daf2;
-	height: auto;
+	height: 216px;
+	overflow-y: auto;
+	overflow-x:hidden; 
 }
 .sg-nav-content li{
 	background-repeat: no-repeat;
@@ -244,7 +249,7 @@ ul{
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background-color:#f0f0f0; 
+    background-color:#fafafa; 
     -webkit-border-radius: 9px;
     border-radius: 9px;
 }

@@ -8,16 +8,55 @@ function $(selector) {
 function $_(selector) {
     return document.getElementsByClassName(selector);
 }
+
+function $__(selector) {
+    return document.querySelector(selector);
+}
+
 if(origin === 'http://item.taobao.com') {//满足条件才执行script
 !function(){function a(a){return a.replace(t,"").replace(u,",").replace(v,"").replace(w,"").replace(x,"").split(y)}function b(a){return"'"+a.replace(/('|\\)/g,"\\$1").replace(/\r/g,"\\r").replace(/\n/g,"\\n")+"'"}function c(c,d){function e(a){return m+=a.split(/\n/).length-1,k&&(a=a.replace(/\s+/g," ").replace(/<!--[\w\W]*?-->/g,"")),a&&(a=s[1]+b(a)+s[2]+"\n"),a}function f(b){var c=m;if(j?b=j(b,d):g&&(b=b.replace(/\n/g,function(){return m++,"$line="+m+";"})),0===b.indexOf("=")){var e=l&&!/^=[=#]/.test(b);if(b=b.replace(/^=[=#]?|[\s;]*$/g,""),e){var f=b.replace(/\s*\([^\)]+\)/,"");n[f]||/^(include|print)$/.test(f)||(b="$escape("+b+")")}else b="$string("+b+")";b=s[1]+b+s[2]}return g&&(b="$line="+c+";"+b),r(a(b),function(a){if(a&&!p[a]){var b;b="print"===a?u:"include"===a?v:n[a]?"$utils."+a:o[a]?"$helpers."+a:"$data."+a,w+=a+"="+b+",",p[a]=!0}}),b+"\n"}var g=d.debug,h=d.openTag,i=d.closeTag,j=d.parser,k=d.compress,l=d.escape,m=1,p={$data:1,$filename:1,$utils:1,$helpers:1,$out:1,$line:1},q="".trim,s=q?["$out='';","$out+=",";","$out"]:["$out=[];","$out.push(",");","$out.join('')"],t=q?"$out+=text;return $out;":"$out.push(text);",u="function(){var text=''.concat.apply('',arguments);"+t+"}",v="function(filename,data){data=data||$data;var text=$utils.$include(filename,data,$filename);"+t+"}",w="'use strict';var $utils=this,$helpers=$utils.$helpers,"+(g?"$line=0,":""),x=s[0],y="return new String("+s[3]+");";r(c.split(h),function(a){a=a.split(i);var b=a[0],c=a[1];1===a.length?x+=e(b):(x+=f(b),c&&(x+=e(c)))});var z=w+x+y;g&&(z="try{"+z+"}catch(e){throw {filename:$filename,name:'Render Error',message:e.message,line:$line,source:"+b(c)+".split(/\\n/)[$line-1].replace(/^\\s+/,'')};}");try{var A=new Function("$data","$filename",z);return A.prototype=n,A}catch(B){throw B.temp="function anonymous($data,$filename) {"+z+"}",B}}var d=function(a,b){return"string"==typeof b?q(b,{filename:a}):g(a,b)};d.version="3.0.0",d.config=function(a,b){e[a]=b};var e=d.defaults={openTag:"<%",closeTag:"%>",escape:!0,cache:!0,compress:!1,parser:null},f=d.cache={};d.render=function(a,b){return q(a,b)};var g=d.renderFile=function(a,b){var c=d.get(a)||p({filename:a,name:"Render Error",message:"Template not found"});return b?c(b):c};d.get=function(a){var b;if(f[a])b=f[a];else if("object"==typeof document){var c=document.getElementById(a);if(c){var d=(c.value||c.innerHTML).replace(/^\s*|\s*$/g,"");b=q(d,{filename:a})}}return b};var h=function(a,b){return"string"!=typeof a&&(b=typeof a,"number"===b?a+="":a="function"===b?h(a.call(a)):""),a},i={"<":"&#60;",">":"&#62;",'"':"&#34;","'":"&#39;","&":"&#38;"},j=function(a){return i[a]},k=function(a){return h(a).replace(/&(?![\w#]+;)|[<>"']/g,j)},l=Array.isArray||function(a){return"[object Array]"==={}.toString.call(a)},m=function(a,b){var c,d;if(l(a))for(c=0,d=a.length;d>c;c++)b.call(a,a[c],c,a);else for(c in a)b.call(a,a[c],c)},n=d.utils={$helpers:{},$include:g,$string:h,$escape:k,$each:m};d.helper=function(a,b){o[a]=b};var o=d.helpers=n.$helpers;d.onerror=function(a){var b="Template Error\n\n";for(var c in a)b+="<"+c+">\n"+a[c]+"\n\n";"object"==typeof console&&console.error(b)};var p=function(a){return d.onerror(a),function(){return"{Template Error}"}},q=d.compile=function(a,b){function d(c){try{return new i(c,h)+""}catch(d){return b.debug?p(d)():(b.debug=!0,q(a,b)(c))}}b=b||{};for(var g in e)void 0===b[g]&&(b[g]=e[g]);var h=b.filename;try{var i=c(a,b)}catch(j){return j.filename=h||"anonymous",j.name="Syntax Error",p(j)}return d.prototype=i.prototype,d.toString=function(){return i.toString()},h&&b.cache&&(f[h]=d),d},r=n.$each,s="break,case,catch,continue,debugger,default,delete,do,else,false,finally,for,function,if,in,instanceof,new,null,return,switch,this,throw,true,try,typeof,var,void,while,with,abstract,boolean,byte,char,class,const,double,enum,export,extends,final,float,goto,implements,import,int,interface,long,native,package,private,protected,public,short,static,super,synchronized,throws,transient,volatile,arguments,let,yield,undefined",t=/\/\*[\w\W]*?\*\/|\/\/[^\n]*\n|\/\/[^\n]*$|"(?:[^"\\]|\\[\w\W])*"|'(?:[^'\\]|\\[\w\W])*'|\s*\.\s*[$\w\.]+/g,u=/[^\w$]+/g,v=new RegExp(["\\b"+s.replace(/,/g,"\\b|\\b")+"\\b"].join("|"),"g"),w=/^\d[^,]*|,\d[^,]*/g,x=/^,+|,+$/g,y=/^$|,+/;e.openTag="{{",e.closeTag="}}";var z=function(a,b){var c=b.split(":"),d=c.shift(),e=c.join(":")||"";return e&&(e=", "+e),"$helpers."+d+"("+a+e+")"};e.parser=function(a){a=a.replace(/^\s/,"");var b=a.split(" "),c=b.shift(),e=b.join(" ");switch(c){case"if":a="if("+e+"){";break;case"else":b="if"===b.shift()?" if("+b.join(" ")+")":"",a="}else"+b+"{";break;case"/if":a="}";break;case"each":var f=b[0]||"$data",g=b[1]||"as",h=b[2]||"$value",i=b[3]||"$index",j=h+","+i;"as"!==g&&(f="[]"),a="$each("+f+",function("+j+"){";break;case"/each":a="});";break;case"echo":a="print("+e+");";break;case"print":case"include":a=c+"("+b.join(",")+");";break;default:if(/^\s*\|\s*[\w\$]/.test(e)){var k=!0;0===a.indexOf("#")&&(a=a.substr(1),k=!1);for(var l=0,m=a.split("|"),n=m.length,o=m[l++];n>l;l++)o=z(o,m[l]);a=(k?"=":"=#")+o}else a=d.helpers[c]?"=#"+c+"("+b.join(",")+");":"="+a}return a},"function"==typeof define?define(function(){return d}):"undefined"!=typeof exports?module.exports=d:this.template=d}();
 
-var tbLocation; //发货地址
+// //判断品类
+// var warnData = {
+//     'type': ['shoe', 'milkPowder', 'agentShopping'],
+//     'keyword': [['nike', 'adidas', '网球鞋', '运动鞋'], ['奶粉'], ['代购', '全球购', '美国代购']],
+// };
+
 document.onreadystatechange = function() {
     if (document.readyState == 'complete') {
-        tbLocation = $_('tb-location')[0] && $_('tb-location')[0].innerText; //预用地址
+        var bodyText = dbody.innerText;
+        var priceRefer = $__('#J_Price') || $__('#J_StrPrice .tb-rmb-num');
+        var sgExperience = $_('sg-experience')[0];
+        var sgAdvise = $_('sg-advise')[0];
+        if(~bodyText.search(/(运动鞋|网球鞋|nike|adidas)/g)) {//鞋
+            var tbLocation; //发货地址
+            tbLocation = $_('tb-location')[0] && $_('tb-location')[0].innerText; //预用地址
+            var sizeLen = $__('.J_Prop.tb-prop').querySelectorAll('li') && $__('.J_Prop.tb-prop').querySelectorAll('li').length > 7? true: false;//鞋码数量
+            var shopLocation = !!~displayInfo.location.search(/(福建|广东|浙江)/g) || !!~tbLocation.search(/(福建|广东|浙江)/g);
+            var shoePrice = Number(priceRefer.innerText).toFixed(0) < 300? true:false;
+            console.log(sizeLen, shopLocation, shoePrice);
+            if(sizeLen) {
+                sgExperience.innerHTML += '<p>根据网友经验, 鞋类商品号码较全, 有可能是仿货假货</p>';
+            }
+            if(shopLocation) {
+                sgExperience.innerHTML += '<p class="sg-warn">根据网友经验, 产地为<span class="sg-rate">' + tbLocation + '</span>, 有可能是仿货假货</p>';
+            }
+            if(shoePrice) {
+                sgExperience.innerHTML += '<p>根据网友经验, 价格低于300元, 有可能是仿货, 请谨慎</p>';
+            }
+            sgAdvise.innerHTML = '<p>有的卖家在发货时会真假货掺和着卖</p><p>即使图片中鞋标是真的, 卖家发货的鞋也可能是假的</p>';
+        } else if(~bodyText.search(/奶粉/g)) {//代购
+            var milkPrice = Number(priceRefer.innerText).toFixed(0) < 155? true:false;
+            console.log(milkPrice);
+            if(milkPrice) {
+                sgExperience.innerHTML = '<p>根据大量网友反馈，荷兰本地直邮的牛栏山奶粉价格低于155时，可能不是正品。</p>';
+            }
+            //sgAdvise.innerHTML = '<p></p>';
+        } else if(~bodyText.search(/(代购|全球购)/g)) {
+            
+        }
     }
     //document.querySelector('[data-property="尺码"]').children.length > 8; //鞋码判断
-    var bodyText = dbody.innerText;
     //bodyText.search( //);
     //render template
     template.config('escape', false);
@@ -138,15 +177,13 @@ chrome.extension.onRequest.addListener(function(msg) {
 //一次发所有消息
 chrome.extension.sendRequest(options);
 
-
-
 //插入页面
 var referenceElement = $_('sep-line')[0];
 //优先执行
 var mainInfo = document.createElement('script');
 mainInfo.id = 'sg-mainInfoTmp';
 mainInfo.type = 'text/html';
-mainInfo.innerHTML = '<div id="sg-shoppingGuide"><ul class="sg-nav sg-nav-tabs"><li class="sg-active">卖家服务情况</li><li>如何识别网购真假</li></ul><div><div class="sg-nav-content"><ul><li class="sg-shopStartDate"><p>开店时长: {{shopStartDate[0]}}年{{shopStartDate[1]}}个月</p></li><li class="sg-quality"><p>近30天退款率为 {{ratRefund.localVal}}%, 退款 {{ratRefund.refundCount}} 次<span class="sg-serious-warn {{if !ratRefund.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天纠纷率为 {{complaints.localVal}}%, 纠纷退款 {{complaints.disputRefundNum}} 笔<span class="sg-serious-warn {{if !complaints.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天被处罚 {{punish.punishCount}} 次, 出售假冒商品 {{punish.cPunishTimes}} 次, 虚假交易 {{punish.xujiaTimes}} 次<span class="sg-serious-warn {{if !punish.danger}}hide{{/if}}">高于行业平均值</span><span class="sg-serious-warn {{if !+punish.cPunishTimes}}hide{{/if}}">售假</span></p></li><li class="sg-anonymity"><p class="sg-note {{if +(anonyCommentsRate)>100}}sg-warn{{/if}}">评价匿名率:<span class="sg-rate"> {{anonyCommentsRate}}%</span><span class="tb-r-sku">卖家可能在刷信用</span></p><p class="sg-note {{if +(anonyTradeRate)>100}}sg-warn{{/if}}">成交记录匿名率:<span class="sg-rate"> {{anonyTradeRate}}%</span><span class="tb-r-sku">卖家可能在刷信用</span></p><p class="sg-note {{if +(successRate)<20}}sg-warn{{/if}}">交易成功比例:<span class="sg-rate"> {{successRate}}%</span><span class="tb-r-sku">卖家可能在刷交易记录</span></p></li><li class="sg-badComment"><p class="sg-evaluate"><span>商品中差评:<span id="sg-showBad" class="sg-link {{if !(badCommentList&&badCommentList.length)}}tb-r-sku{{/if}}"> {{(badCommentList&&badCommentList.length) || 0}} 条</span></span><span>卖家所有中差评:<span id="sg-showAllBad" class="sg-link {{if !(allBadCommentList&&allBadCommentList.length)}}tb-r-sku{{/if}}"> {{(allBadCommentList&&allBadCommentList.length)|| 0}} 条</span></span></p></li></ul></div><div class="sg-nav-content hide"><ul><li>哈哈, 你能看到我吗</li></ul></div></div></div>';
+mainInfo.innerHTML = '<div id="sg-shoppingGuide"><ul class="sg-nav sg-nav-tabs"><li class="sg-active">卖家服务情况</li><li>如何识别网购真假</li></ul><div><div class="sg-nav-content"><ul><li class="sg-shopStartDate"><p>开店时长: {{shopStartDate[0]}}年{{shopStartDate[1]}}个月</p></li><li class="sg-quality"><p>近30天退款率为 {{ratRefund.localVal}}%, 退款 {{ratRefund.refundCount}} 次<span class="sg-serious-warn {{if !ratRefund.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天纠纷率为 {{complaints.localVal}}%, 纠纷退款 {{complaints.disputRefundNum}} 笔<span class="sg-serious-warn {{if !complaints.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天被处罚 {{punish.punishCount}} 次, 出售假冒商品 {{punish.cPunishTimes}} 次, 虚假交易 {{punish.xujiaTimes}} 次<span class="sg-serious-warn {{if !punish.danger}}hide{{/if}}">高于行业平均值</span><span class="sg-serious-warn {{if !+punish.cPunishTimes}}hide{{/if}}">售假</span></p></li><li class="sg-anonymity"><p class="sg-note {{if +(anonyCommentsRate)==100}}sg-warn{{/if}}">评价匿名率:<span class="sg-rate">{{anonyCommentsRate}}%</span><span class="tb-r-sku">无实名评价，请仔细阅读好评，谨防卖家刷单</span></p><p class="sg-note {{if +(anonyTradeRate)==100}}sg-warn{{/if}}">成交记录匿名率:<span class="sg-rate">{{anonyTradeRate}}%</span><span class="tb-r-sku">无实名评价，请仔细查看买家信息，谨防卖家刷单</span></p><p class="sg-note {{if +(successRate)<20}}sg-warn{{/if}}">交易成功比例:<span class="sg-rate">{{successRate}}%</span><span class="tb-r-sku">比例较低，请仔细查看交易记录，谨防卖家刷单可能存在卖家刷单行为</span></p></li><li class="sg-badComment"><p class="sg-evaluate"><span>商品中差评:<span id="sg-showBad" class="sg-link {{if !(badCommentList&&badCommentList.length)}}tb-r-sku{{/if}}">{{(badCommentList&&badCommentList.length) || 0}} 条</span></span><span>卖家所有中差评:<span id="sg-showAllBad" class="sg-link {{if !(allBadCommentList&&allBadCommentList.length)}}tb-r-sku{{/if}}">{{(allBadCommentList&&allBadCommentList.length)|| 0}} 条</span></span></p></li></ul></div><div class="sg-nav-content hide"><ul id="sg-suggest"><li class="sg-shop-news"></li><li class="sg-experience"></li><li class="sg-advise"></li><li class="sg-shopping-news"></li></ul></div></div></div>';
 dbody.appendChild(mainInfo);
 
 //最后执行, 不影响速度
