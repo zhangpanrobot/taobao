@@ -70,10 +70,19 @@ ul{
 .sg-comments-header{
 	height: 30px;
 	line-height: 30px;
+	padding:8px;
+	text-indent: 20px;
+	background: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/popup_icon_comment.png') 8px 8px no-repeat;
 }
 .sg-comments-hide{
 	float: right;
 	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	background: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/popup_btn_close.png') 0 0 no-repeat;
+}
+.sg-comments-hide:hover{
+	background-position: 0 -16px;
 }
 .sg-comments-header.hide, .hide{
 	display: none;
@@ -185,6 +194,7 @@ ul{
 }
 .sg-nav-content li{
 	background-repeat: no-repeat;
+	background-position: 12px 2px;
 	padding-left: 40px;
 	margin: 12px 0;
 }
@@ -229,18 +239,29 @@ ul{
 	left: -11px;
 }
 .sg-shopStartDate{
-	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_clock.png);
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_clock.png');
 }
 .sg-quality{
-	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_date.png);
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_date.png');
 }
 .sg-anonymity{
-	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_anonymity.png);
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_anonymity.png');
 }
 .sg-badComment{
-	background-image: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_comment.png);
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_comment.png');
 }
-
+.sg-shop-news{
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_news.png');
+}
+.sg-experience{
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_alert.png');
+}
+.sg-advise{
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_lightbulb.png');
+}
+.sg-shopping-news{
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_experience.png');
+}
 
 /* Let's get this party started */
 ::-webkit-scrollbar {

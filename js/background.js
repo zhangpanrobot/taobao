@@ -73,7 +73,7 @@ function sendRequest(url, callback) {
 function dataCollection(data, dataList) {
 	data = (new Function('function $callback(obj){return obj};function jsonp_reviews_list(obj){return obj;}function __jsonp_records_reload(obj){return obj;};return ' + data.trim()))();
 	if (typeof dataList === "string") {
-		displayInfo.successRate = (data.quantity.paySuccessItems / (data.quantity.paySuccessItems + data.quantity.confirmGoodsItems) * 100).toFixed(2);
+		displayInfo.successRate = (data.quantity.confirmGoodsItems / (data.quantity.paySuccessItems + data.quantity.confirmGoodsItems) * 100).toFixed(2);
 	} else if (getType(data) === "Array") {
 		dataList = data;
 	} else {
