@@ -72,14 +72,14 @@ ul{
 	height: 14px;
 	padding:8px;
 	text-indent: 20px;
-	background: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/popup_icon_comment.png') 8px 8px no-repeat;
+	background: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/popup_icon_comment.png') 8px 8px no-repeat;
 }
 .sg-comments-hide{
 	float: right;
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
-	background: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/popup_btn_close.png') 0 0 no-repeat;
+	background: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/popup_btn_close.png') 0 0 no-repeat;
 }
 .sg-comments-header.hide, .hide{
 	display: none;
@@ -123,7 +123,7 @@ ul{
 }
 .sg-nav-tabs{
 	padding-left: 40px;
-	background: url(chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_clock.png) no-repeat left top;
+	background: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_clock.png) no-repeat left top;
 	background-color: #79ade9;
 }
 .sg-nav-tabs>li{
@@ -243,30 +243,29 @@ ul{
 	left: -11px;
 }
 .sg-shopStartDate{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_clock.png');
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_clock.png');
 }
 .sg-quality{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_date.png');
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_date.png');
 }
 .sg-anonymity{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_anonymity.png');
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_anonymity.png');
 }
 .sg-badComment{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_comment.png');
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_comment.png');
 }
 .sg-shop-news{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_news.png');
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_news.png');
 }
-.sg-experience{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_alert.png');
+.sg-experience,.sg-falsePropaganda{
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_alert.png');
 }
 .sg-advise{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_lightbulb.png');
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_lightbulb.png');
 }
 .sg-shopping-news{
-	background-image: url('chrome-extension://mbkeecncnjjacmcpnepghmlbpgneoadl/images/icon_experience.png');
+	background-image: url('chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_experience.png');
 }
-
 /* Let's get this party started */
 ::-webkit-scrollbar {
     width: 9px;

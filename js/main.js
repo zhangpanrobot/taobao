@@ -25,35 +25,53 @@ if(origin === 'http://item.taobao.com') {//满足条件才执行script
 document.onreadystatechange = function() {
     if (document.readyState == 'complete') {
         var bodyText = dbody.innerText;
-        var priceRefer = $__('#J_Price') || $__('#J_StrPrice .tb-rmb-num');
+        var keyword = $_('tb-main-title')[0].innerText + $('attributes').innerText;
+        //var keyword = $('.tb-main-title').innerText + $('#attributes').innerText;
+        var priceRefer = $__('#J_Price') || $__('#J_StrPrice .tb-rmb-num');//价格
+        var sellerName = $_('tb-seller-name')[0].innerText;//掌柜名
+        var sgShopNews = $_('sg-shop-news')[0];
         var sgExperience = $_('sg-experience')[0];
         var sgAdvise = $_('sg-advise')[0];
-        if(~bodyText.search(/(运动鞋|网球鞋|nike|adidas)/g)) {//鞋
-            var tbLocation; //发货地址
+        var sgShoppingNews = $_('sg-shopping-news')[0];
+        var sgFalsePropaganda = $_('sg-falsePropaganda')[0];
+        if(~keyword.search(/(((nike|adidas|耐克|阿迪).*(运动鞋|网球鞋))|((运动鞋|网球鞋).*(nike|adidas|耐克|阿迪)))/i)) {//鞋
+            var tbLocation; //发货地址 
             tbLocation = $_('tb-location')[0] && $_('tb-location')[0].innerText; //预用地址
             var sizeLen = $__('.J_Prop.tb-prop').querySelectorAll('li') && $__('.J_Prop.tb-prop').querySelectorAll('li').length > 7? true: false;//鞋码数量
             var shopLocation = !!~displayInfo.location.search(/(福建|广东|浙江)/g) || !!~tbLocation.search(/(福建|广东|浙江)/g);
             var shoePrice = Number(priceRefer.innerText).toFixed(0) < 300? true:false;
-            console.log(sizeLen, shopLocation, shoePrice);
+            sgShoppingNews.innerHTML = '<a href="http://jingyan.baidu.com/article/597a06438f3652312b52432d.html">如何辨别nike鞋真假</a>';
             if(sizeLen) {
-                sgExperience.innerHTML += '<p>根据网友经验, 鞋类商品号码较全, 有可能是仿货假货</p>';
+                sgExperience.innerHTML += '<p>运动鞋号码较全, 请谨慎购买</p>';
             }
             if(shopLocation) {
-                sgExperience.innerHTML += '<p class="sg-warn">根据网友经验, 产地为<span class="sg-rate">' + tbLocation + '</span>, 有可能是仿货假货</p>';
+                sgExperience.innerHTML += '<p class="sg-warn">产地为<span class="sg-rate">' + tbLocation + '</span>, 请谨慎购买</p>';
             }
             if(shoePrice) {
-                sgExperience.innerHTML += '<p>根据网友经验, 价格低于300元, 有可能是仿货, 请谨慎</p>';
+                sgExperience.innerHTML += '<p>价格低于300元, 请谨慎购买</p>';
             }
-            sgAdvise.innerHTML = '<p>有的卖家在发货时会真假货掺和着卖</p><p>即使图片中鞋标是真的, 卖家发货的鞋也可能是假的</p>';
-        } else if(~bodyText.search(/奶粉/g)) {//代购
-            var milkPrice = Number(priceRefer.innerText).toFixed(0) < 155? true:false;
-            console.log(milkPrice);
-            if(milkPrice) {
-                sgExperience.innerHTML = '<p>根据大量网友反馈，荷兰本地直邮的牛栏山奶粉价格低于155时，可能不是正品。</p>';
+            sgAdvise.innerHTML = '<p>购买鞋类商品时请您注意: 有的卖家会真假鞋掺和着卖</p><p>即使图片中鞋标是真的, 卖家发货也可能是假的</p>';
+        } else if(~keyword.search(/(奶粉.*代购|代购.*奶粉|牛栏.*奶粉|直邮.*爱他美|爱他美.*直邮)/g)) {//代购
+            sgShoppingNews.innerHTML = '<a href="http://mp.weixin.qq.com/s?__biz=MjM5OTM4Njc2MA==&mid=200745847&idx=4&sn=17c5bf546419b21f1a46739dddbeeb4e&scene=1#rd">母婴代购黑幕，空姐带货。亲戚在国外。人肉带货都是逗你玩</a>';
+            var milkPrice = Number(priceRefer.innerText).toFixed(0);
+            if((~keyword.search(/牛栏.*奶粉/g) && milkPrice < 155) || (~keyword.search(/(直邮.*爱他美|爱他美.*直邮/g) && milkPrice < 180)) {
+                sgExperience.innerHTML = '<p>奶粉价格低于官网价格,请谨慎购买</p>';
             }
             //sgAdvise.innerHTML = '<p></p>';
-        } else if(~bodyText.search(/(代购|全球购)/g)) {
-            
+        } else if(~keyword.search(/(GNC|汤臣倍健|保健品)/g)) {
+            sgShoppingNews.innerHTML = '<p><a target="_blank" href="http://app1.sfda.gov.cn/datasearch/face3/base.jsp?tableId=31&tableName=TABLE31&title=%BD%F8%BF%DA%B1%A3%BD%A1%CA%B3%C6%B7&bcId=118103387241329685908587941736">国家药监局数据查询网址</a></p><p><a target="_blank" href="http://www.yiyaojie.com/bg/bjp/20141009/54641.html">淘宝五钻卖家售假保健品“美秀决明子荷叶胶囊”被抓</a></p><p><a target="_blank" href="http://jxfzb.jxnews.com.cn/system/2014/04/11/013036399.shtml">淘宝网店卖假保健食品...</a></p>';
+            if(~keyword.search(/GNC/g)){
+                sgShoppingNews.innerHTML += '<p><a target="_blank" href="http://www.91own.com/detail/366.html">如何鉴别真假GNC保健品</a></p>';
+            }
+        }
+        if(~bodyText.search(/(好评.*返现|返现.*好评)/g)) {
+            sgFalsePropaganda.innerHTML += '<p>卖家通过好评返现的方式刷好评，请谨慎购物</p>';
+        }
+        if(~bodyText.search(/假一罚/g)) {
+            sgFalsePropaganda.innerHTML += '<p>专柜一般不开具假货证明，假一罚十无效，请谨慎购物</p>';
+        }
+        if(~bodyText.search(/(专柜.*验货|验货.*专柜)/g)) {
+            sgFalsePropaganda.innerHTML += '<p>专柜一般不开具假货证明，专柜验货无效，请谨慎购物</p>';            
         }
     }
     //document.querySelector('[data-property="尺码"]').children.length > 8; //鞋码判断
@@ -144,7 +162,6 @@ chrome.extension.onRequest.addListener(function(msg) {
             taobaoAssistant.innerHTML = mainInfoDisplay;
             referenceElement.parentNode.insertBefore(taobaoAssistant, referenceElement);
             $('sg-showBad').addEventListener('click', function(e) {
-                console.log(this.className);
                 if(this.className !== 'sg-link ') return;
                 $('sg-allBadComments').style.display = 'none';
                 $('sg-badComments').style.display = 'block';
@@ -183,7 +200,7 @@ var referenceElement = $_('sep-line')[0];
 var mainInfo = document.createElement('script');
 mainInfo.id = 'sg-mainInfoTmp';
 mainInfo.type = 'text/html';
-mainInfo.innerHTML = '<div id="sg-shoppingGuide"><ul class="sg-nav sg-nav-tabs"><li class="sg-active">卖家服务情况</li><li>如何识别网购真假</li></ul><div><div class="sg-nav-content"><ul><li class="sg-shopStartDate"><p>开店时长: {{shopStartDate[0]}}年{{shopStartDate[1]}}个月</p></li><li class="sg-quality"><p>近30天退款率为 {{ratRefund.localVal}}%, 退款 {{ratRefund.refundCount}} 次<span class="sg-serious-warn {{if !ratRefund.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天纠纷率为 {{complaints.localVal}}%, 纠纷退款 {{complaints.disputRefundNum}} 笔<span class="sg-serious-warn {{if !complaints.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天被处罚 {{punish.punishCount}} 次, 出售假冒商品 {{punish.cPunishTimes}} 次, 虚假交易 {{punish.xujiaTimes}} 次<span class="sg-serious-warn {{if !punish.danger}}hide{{/if}}">高于行业平均值</span><span class="sg-serious-warn {{if !+punish.cPunishTimes}}hide{{/if}}">售假</span></p></li><li class="sg-anonymity"><p class="sg-note {{if +(anonyCommentsRate)==100}}sg-warn{{/if}}">评价匿名率:<span class="sg-rate">{{anonyCommentsRate}}%</span><span class="tb-r-sku">无实名评价，请仔细阅读好评，谨防卖家刷单</span></p><p class="sg-note {{if +(anonyTradeRate)==100}}sg-warn{{/if}}">成交记录匿名率:<span class="sg-rate">{{anonyTradeRate}}%</span><span class="tb-r-sku">无实名评价，请仔细查看买家信息，谨防卖家刷单</span></p><p class="sg-note {{if +(successRate)<20}}sg-warn{{/if}}">交易成功比例:<span class="sg-rate">{{successRate}}%</span><span class="tb-r-sku">比例较低，请仔细查看交易记录，谨防卖家刷单可能存在卖家刷单行为</span></p></li><li class="sg-badComment"><p class="sg-evaluate"><span>商品中差评:<span id="sg-showBad" class="sg-link {{if !(badCommentList&&badCommentList.length)}}tb-r-sku{{/if}}">{{(badCommentList&&badCommentList.length) || 0}} 条</span></span><span>卖家所有中差评:<span id="sg-showAllBad" class="sg-link {{if !(allBadCommentList&&allBadCommentList.length)}}tb-r-sku{{/if}}">{{(allBadCommentList&&allBadCommentList.length)|| 0}} 条</span></span></p></li></ul></div><div class="sg-nav-content hide"><ul id="sg-suggest"><li class="sg-shop-news"></li><li class="sg-experience"></li><li class="sg-advise"></li><li class="sg-shopping-news"></li></ul></div></div></div>';
+mainInfo.innerHTML = '<div id="sg-shoppingGuide"><ul class="sg-nav sg-nav-tabs"><li class="sg-active">卖家服务情况</li><li>如何识别网购真假</li></ul><div><div class="sg-nav-content"><ul><li class="sg-shopStartDate"><p>开店时长: {{shopStartDate[0]}}年{{shopStartDate[1]}}个月</p></li><li class="sg-quality"><p>近30天退款率为 {{ratRefund.localVal}}%, 退款 {{ratRefund.refundCount}} 次<span class="sg-serious-warn {{if !ratRefund.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天纠纷率为 {{complaints.localVal}}%, 纠纷退款 {{complaints.disputRefundNum}} 笔<span class="sg-serious-warn {{if !complaints.danger}}hide{{/if}}">高于行业平均值</span></p><p>近30天被处罚 {{punish.punishCount}} 次, 出售假冒商品 {{punish.cPunishTimes}} 次, 虚假交易 {{punish.xujiaTimes}} 次<span class="sg-serious-warn {{if !punish.danger}}hide{{/if}}">高于行业平均值</span><span class="sg-serious-warn {{if !+punish.cPunishTimes}}hide{{/if}}">售假</span></p></li><li class="sg-anonymity"><p class="sg-note {{if +(anonyCommentsRate)==100}}sg-warn{{/if}}">评价匿名率:<span class="sg-rate">{{anonyCommentsRate}}%</span><span class="tb-r-sku">无实名评价，请仔细阅读好评，谨防卖家刷单</span></p><p class="sg-note {{if +(anonyTradeRate)==100}}sg-warn{{/if}}">成交记录匿名率:<span class="sg-rate">{{anonyTradeRate}}%</span><span class="tb-r-sku">无实名评价，请仔细查看买家信息，谨防卖家刷单</span></p><p class="sg-note {{if +(successRate)<20}}sg-warn{{/if}}">交易成功比例:<span class="sg-rate">{{successRate}}%</span><span class="tb-r-sku">比例较低，请仔细查看交易记录，谨防卖家刷单可能存在卖家刷单行为</span></p></li><li class="sg-badComment"><p class="sg-evaluate"><span>商品中差评:<span id="sg-showBad" class="sg-link {{if !(badCommentList&&badCommentList.length)}}tb-r-sku{{/if}}">{{(badCommentList&&badCommentList.length) || 0}} 条</span></span><span>卖家所有中差评:<span id="sg-showAllBad" class="sg-link {{if !(allBadCommentList&&allBadCommentList.length)}}tb-r-sku{{/if}}">{{(allBadCommentList&&allBadCommentList.length)|| 0}} 条</span></span></p></li></ul></div><div class="sg-nav-content hide"><ul id="sg-suggest"><li class="sg-shop-news"></li><li class="sg-experience"></li><li class="sg-advise"></li><li class="sg-shopping-news"></li><li class="sg-falsePropaganda"></li></ul></div></div></div>';
 dbody.appendChild(mainInfo);
 
 //最后执行, 不影响速度

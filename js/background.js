@@ -19,6 +19,18 @@ function sendToContent() {
 	}
 }
 
+function $callback(obj) {
+	return obj
+};
+
+function jsonp_reviews_list(obj) {
+	return obj;
+}
+
+function __jsonp_records_reload(obj) {
+	return obj;
+}
+
 function getType(obj) {
 	return Object.prototype.toString.call(obj).slice(8, -1);
 }
@@ -71,9 +83,9 @@ function sendRequest(url, callback) {
 }
 
 function dataCollection(data, dataList) {
-	data = (new Function('function $callback(obj){return obj};function jsonp_reviews_list(obj){return obj;}function __jsonp_records_reload(obj){return obj;};return ' + data.trim()))();
+	data = (new Function('return ' + data.trim()))();
 	if (typeof dataList === "string") {
-		displayInfo.successRate = +data.quantity.confirmGoodsItems===0?0:(data.quantity.confirmGoodsItems / (data.quantity.paySuccessItems + data.quantity.confirmGoodsItems) * 100).toFixed(2);
+		displayInfo.successRate = ~~(data.quantity.confirmGoodsItems / (data.quantity.paySuccessItems + data.quantity.confirmGoodsItems) * 100).toFixed(2);
 	} else if (getType(data) === "Array") {
 		dataList = data;
 	} else {
@@ -104,9 +116,9 @@ function dataCollection(data, dataList) {
 				anonyTradeLength += curTradeDetailList.match(new RegExp(/匿名/g)) ? curTradeDetailList.match(new RegExp(/匿名/g)).length : 0;
 			}
 		}
-		displayInfo.anonyCommentsRate = anonyCommentsLength ===0?0:((anonyCommentsLength / commentsLength) * 100).toFixed(2); //评价匿名率
-		displayInfo.anonyTradeRate = anonyTradeLength===0?0:((anonyTradeLength / tradeLength) * 100).toFixed(2); //成交量匿名率
-		displayInfo.badCommentList = displayInfo.badCommentList[0].comments// && badCommentRefine(displayInfo.badCommentList[0].comments);
+		displayInfo.anonyCommentsRate = ~~((anonyCommentsLength / commentsLength) * 100).toFixed(2); //评价匿名率
+		displayInfo.anonyTradeRate = ~~((anonyTradeLength / tradeLength) * 100).toFixed(2); //成交量匿名率
+		displayInfo.badCommentList = displayInfo.badCommentList[0].comments // && badCommentRefine(displayInfo.badCommentList[0].comments);
 		sendToContent();
 	}
 }
@@ -115,7 +127,7 @@ function shopInfoBundle(data) {
 	var dateIndex = data.indexOf('id="J_showShopStartDate"');
 	var foundDate = data.slice(dateIndex, data.indexOf('/>', dateIndex));
 	var shopStartDate = foundDate.match(new RegExp(/[0-9\-]{4,}/g))[0];
-	displayInfo.shopStartDate = ((new Date() - new Date(shopStartDate))/31104000000).toFixed(1).toString().split('.');
+	displayInfo.shopStartDate = ((new Date() - new Date(shopStartDate)) / 31104000000).toFixed(1).toString().split('.');
 	var locationMatch = data.match(/<li>所在地区/g);
 	var locationRefer = data.lastIndexOf('<li>所在地区') + 9;
 	if (locationMatch) {
@@ -147,15 +159,15 @@ function shopInfoBundle(data) {
 		displayInfo.punish.punishCount = punish.punishCount; //处罚数
 		displayInfo.punish.cPunishTimes = punish.cPunishTimes; //售假数, 不为零时显示"售假"
 		displayInfo.punish.danger = +punish.indVal - (+punish.localVal) < 0 ? true : false;
-		displayInfo.punish.xujiaTimes = punish.xujiaTimes;//虚假交易
+		displayInfo.punish.xujiaTimes = punish.xujiaTimes; //虚假交易
 		displayInfo.punish.localVal = punish.localVal;
 		sendToContent();
 	});
 
 	sendRequest(rateApi, function(allBadData) {
 		displayInfo.allBadCommentList = [];
-		allBadData = (new Function('function shop_rate_list(obj){return obj};return ' + allBadData.trim()))();
-		displayInfo.allBadCommentList = allBadData.rateListDetail;// && badCommentRefine(allBadData.rateListDetail);
+		allBadData = (new Function('return ' + allBadData.trim()))();
+		displayInfo.allBadCommentList = allBadData.rateListDetail; // && badCommentRefine(allBadData.rateListDetail);
 		sendToContent();
 	});
 }
