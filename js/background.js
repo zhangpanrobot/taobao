@@ -73,7 +73,7 @@ function sendRequest(url, callback) {
 function dataCollection(data, dataList) {
 	data = (new Function('function $callback(obj){return obj};function jsonp_reviews_list(obj){return obj;}function __jsonp_records_reload(obj){return obj;};return ' + data.trim()))();
 	if (typeof dataList === "string") {
-		displayInfo.successRate = (data.quantity.confirmGoodsItems / (data.quantity.paySuccessItems + data.quantity.confirmGoodsItems) * 100).toFixed(2);
+		displayInfo.successRate = +data.quantity.confirmGoodsItems===0?0:(data.quantity.confirmGoodsItems / (data.quantity.paySuccessItems + data.quantity.confirmGoodsItems) * 100).toFixed(2);
 	} else if (getType(data) === "Array") {
 		dataList = data;
 	} else {
@@ -104,8 +104,8 @@ function dataCollection(data, dataList) {
 				anonyTradeLength += curTradeDetailList.match(new RegExp(/匿名/g)) ? curTradeDetailList.match(new RegExp(/匿名/g)).length : 0;
 			}
 		}
-		displayInfo.anonyCommentsRate = ((anonyCommentsLength / commentsLength) * 100).toFixed(2); //评价匿名率
-		displayInfo.anonyTradeRate = ((anonyTradeLength / tradeLength) * 100).toFixed(2); //成交量匿名率
+		displayInfo.anonyCommentsRate = anonyCommentsLength ===0?0:((anonyCommentsLength / commentsLength) * 100).toFixed(2); //评价匿名率
+		displayInfo.anonyTradeRate = anonyTradeLength===0?0:((anonyTradeLength / tradeLength) * 100).toFixed(2); //成交量匿名率
 		displayInfo.badCommentList = displayInfo.badCommentList[0].comments// && badCommentRefine(displayInfo.badCommentList[0].comments);
 		sendToContent();
 	}
