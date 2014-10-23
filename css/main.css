@@ -123,7 +123,7 @@ ul{
 }
 .sg-nav-tabs{
 	padding-left: 40px;
-	background: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon_clock.png) no-repeat left top;
+	background: url(chrome-extension://clfkmeagfkifcplkjmnhjedobcaefbjp/images/icon.png) no-repeat 4px 4px;
 	background-color: #79ade9;
 }
 .sg-nav-tabs>li{

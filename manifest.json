@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     //"id": "com.sogou.shoppingGuide",
-    "name": "淘宝购物指南",
-    "description": "淘宝购物指南!",
+    "name": "搜狗打假助手",
+    "description": "搜狗打假助手!",
     "version": "1.0.0",
     "content_scripts": [{
         "matches": ["http://item.taobao.com/item.htm*", "http://rate.taobao.com/*", "http://orate.taobao.com/*", "http://detailskip.taobao.com/*"],
@@ -12,7 +12,6 @@
         "all_frames": true
     }],
     "background": {
-        //"scripts": ["js/background.js"]
         "page":"background.html"
     },
     "permissions": ["storage"],

@@ -31,6 +31,10 @@ function __jsonp_records_reload(obj) {
 	return obj;
 }
 
+function shop_rate_list(obj){
+	return obj;
+}
+
 function getType(obj) {
 	return Object.prototype.toString.call(obj).slice(8, -1);
 }
